@@ -34,21 +34,32 @@ app.get("/articles", (req, res) => {
 });
 
 app.post("/articles", (req, res) => {
-    console.log(req.body.title);
-    console.log(req.body.content);
+  console.log(req.body.title);
+  console.log(req.body.content);
 
-    const newArticle = new Article({
-        title: req.body.title,
-        content: req.body.content
-    });
+  const newArticle = new Article({
+    title: req.body.title,
+    content: req.body.content,
+  });
 
-    newArticle.save((err)=>{
-        res.send(err);
-    });
+  newArticle.save((err) => {
+    res.send(err);
+  });
 });
+
+app.delete("/articles", (req, res) => {
+  Article.deleteMany((err)=>{
+    if(!err){
+      res.send("Deleted all articles");
+    } else {
+      res.send(err);
+    };
+  });
+});
+
+
+app.route("/articles")
 
 app.listen(3000, () => {
   console.log("listening on http://localhost:3000");
 });
-
-
