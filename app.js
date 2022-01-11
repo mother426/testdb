@@ -23,42 +23,71 @@ const articleSchema = {
 
 const Article = mongoose.model("Article", articleSchema);
 
-app.get("/articles", (req, res) => {
-  Article.find((err, results) => {
-    if (!err) {
-      res.send(results);
-    } else {
-      res.send(err);
-    }
-  });
-});
+// app.get("/articles", (req, res) => {
+//   Article.find((err, results) => {
+//     if (!err) {
+//       res.send(results);
+//     } else {
+//       res.send(err);
+//     }
+//   });
+// });
 
-app.post("/articles", (req, res) => {
-  console.log(req.body.title);
-  console.log(req.body.content);
+// app.post("/articles", (req, res) => {
+//   console.log(req.body.title);
+//   console.log(req.body.content);
 
-  const newArticle = new Article({
-    title: req.body.title,
-    content: req.body.content,
-  });
+//   const newArticle = new Article({
+//     title: req.body.title,
+//     content: req.body.content,
+//   });
 
-  newArticle.save((err) => {
-    res.send(err);
-  });
-});
+//   newArticle.save((err) => {
+//     res.send(err);
+//   });
+// });
 
-app.delete("/articles", (req, res) => {
-  Article.deleteMany((err)=>{
-    if(!err){
-      res.send("Deleted all articles");
-    } else {
-      res.send(err);
-    };
-  });
-});
-
+// app.delete("/articles", (req, res) => {
+//   Article.deleteMany((err)=>{
+//     if(!err){
+//       res.send("Deleted all articles");
+//     } else {
+//       res.send(err);
+//     };
+//   });
+// });
 
 app.route("/articles")
+  .get((req, res) => {
+    Article.find((err, results) => {
+      if (!err) {
+        res.send(results);
+      } else {
+        res.send(err);
+      }
+    });
+  })
+
+  .post((req, res) => {
+    const newArticle = new Article({
+      title: req.body.title,
+      content: req.body.content,
+    });
+
+    newArticle.save((err) => {
+      res.send(err);
+    });
+  })
+
+  .delete((req, res) => {
+    Article.deleteMany((err) => {
+      if (!err) {
+        res.send("Deleted all articles");
+      } else {
+        res.send(err);
+      }
+    });
+  });
 
 app.listen(3000, () => {
   console.log("listening on http://localhost:3000");
