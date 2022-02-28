@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const res = require("express/lib/response");
 
 const app = express();
 
@@ -87,6 +88,19 @@ app.route("/articles")
         res.send(err);
       }
     });
+  });
+
+
+app.route("/articles/:articleTitle")
+
+  .get((req, res) => {
+    Article.findOne({title: req.params.articleTitle}, (err, foundArticle)=>{
+      if(foundArticle) {
+        res.send(foundArticle)
+      } else {
+        res.send("No matching articles found");
+      }
+    })
   });
 
 app.listen(3000, () => {
