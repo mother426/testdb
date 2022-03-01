@@ -91,6 +91,10 @@ app.route("/articles")
   });
 
 
+
+
+
+
 app.route("/articles/:articleTitle")
 
   .get((req, res) => {
@@ -101,6 +105,21 @@ app.route("/articles/:articleTitle")
         res.send("No matching articles found");
       }
     })
+  })
+
+  .put((req, res)=>{
+    Article.updateOne(
+      {title: req.params.articleTitle},
+      {title: req.body.title, content: req.body.content},
+      // {overwrite: true},
+      (err)=>{
+        if(!err) {
+          res.send("update success")
+        } else {
+          res.send("")
+        }
+      }
+    )
   });
 
 app.listen(3000, () => {
