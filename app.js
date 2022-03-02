@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const res = require("express/lib/response");
+const req = require("express/lib/request");
+const e = require("express");
 
 const app = express();
 
@@ -111,12 +113,39 @@ app.route("/articles/:articleTitle")
     Article.updateOne(
       {title: req.params.articleTitle},
       {title: req.body.title, content: req.body.content},
-      // {overwrite: true},
+
       (err)=>{
         if(!err) {
           res.send("update success")
         } else {
           res.send("")
+        }
+      }
+    )
+  })
+
+  .patch((req, res) => {
+    Article.updateOne(
+      {title: req.params.articleTitle},
+      {$set: req.body},
+      (err) => {
+        if(!err) {
+          res.send("successfully updated")
+        } else {
+          res.send(err)
+        }
+      }
+    )
+  })
+
+  .delete((req, res) => {
+    Article.deleteOne(
+      {title: req.params.articleTitle},
+      (err) => {
+        if(!err) {
+          res.send("deleted")
+        } else {
+          res.send(err)
         }
       }
     )
